@@ -1,0 +1,16 @@
+.callout {
+    border-left-width: 5px;
+    padding: 5px;
+    border-bottom: 1px solid #eee;
+}
+
+.metadata {
+    --bs-gutter-x: 0;
+}
+
+.clues {
+    height: 600px;
+    width: 300px;
+}
+
+

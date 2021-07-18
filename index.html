@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="static/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@2.3.0/dist/purify.min.js"></script>
+    <script src="static/file.js"></script>
+    <script src="static/crossword.js"></script>
+    <title>Sheet2Puz</title>
+    </head>
+    <body>
+        <div class="row mx-3">
+        <h1>Sheet2Puz</h1>
+        <div class="callout">A tool to convert crosswords from Google Sheets to .puz format, which can be used at e.g. <a href="https://downforacross.com/">Down for Across</a>.</div>
+        </div>
+        <div class="row mx-3">
+            <div class="col-sm-3">
+                <textarea id="across" placeholder="Across clues" class="form-control clues"></textarea>
+            </div>
+            <div class="col-sm-3">
+                <textarea id="down" placeholder="Down clues" class="form-control clues"></textarea>
+            </div>
+            <div class="col-sm-6">
+                <div class="row mb-3">
+                    <div class="input-group metadata">
+                        <input type="text" class="form-control" placeholder="ConvertedPuzzle" id=title>
+                        <span class="input-group-text">by</span>
+                        <input type="text" class="form-control" placeholder="sheet2puz" id="author">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <textarea id="paste" placeholder="Paste the grid directly from Google Sheets here" class="form-control"></textarea>
+                </div>
+                <div id="sheets" />
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -12,7 +12,6 @@ window.onload = function() {
         event.preventDefault();
         let bodyData = event.clipboardData.getData("text/html");
         let sheet = new DOMParser().parseFromString(bodyData, "text/html");
-        window.sheet = sheet;
         if (!sheet.body.firstElementChild || sheet.body.firstElementChild.tagName != "GOOGLE-SHEETS-HTML-ORIGIN") {
             alert("This does not look like it was copied from Google Sheets!");
             return;

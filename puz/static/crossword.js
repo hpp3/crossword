@@ -1,6 +1,6 @@
 function getClues(selector) {
     try {
-        return document.querySelector(selector).value.split("\n").map(x=>x.trim().match(/(\d+) ?[.:-\s]\s*(.+)/).slice(1).join(". "));
+        return document.querySelector(selector).value.split("\n").map(x=>x.trim().match(/(\d+) ?[.:-\s]\s*(.+)/)).filter(x=>x).map(x=>x.slice(1).join(". "));
     } catch (err) {
         console.error(err);
         return [];

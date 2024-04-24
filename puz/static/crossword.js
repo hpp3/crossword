@@ -1,6 +1,6 @@
 function getClues(selector) {
     try {
-        return document.querySelector(selector).value.split("\n").map(x=>x.trim().match(/(\d+) ?[.:-\s]\s*(.+)/)).filter(x=>x).map(x=>x.slice(1).join(". "));
+        return document.querySelector(selector).value.split("\n").map(x=>x.trim().match(/(\d+) ?[.:-\s]\s*(.+)/)).filter(x=>x).map(x=>x.slice(1));
     } catch (err) {
         console.error(err);
         return [];
@@ -19,24 +19,25 @@ window.onload = function() {
         document.querySelector("#sheets").innerHTML = DOMPurify.sanitize(bodyData);
         let black = Array.from(sheet.querySelectorAll("tr"), tr => Array.from(tr.querySelectorAll("td"), td => (td.style.backgroundColor == "rgb(0, 0, 0)") ? "." : " ")).flat();
         let text = Array.from(sheet.querySelectorAll("tr"), tr => Array.from(tr.querySelectorAll("td"), td => td.innerText));
+        window.black = black;
+        window.text = text;
 
         var json = {
-            author: document.querySelector("#author").value || "sheet2puz",
+            author: document.querySelector("#author").value || "https://hpp3.github.io/puz/",
             title: document.querySelector("#title").value || "ConvertedPuzzle",
             size: {cols: text[0].length, rows: text.length},
             grid: black,
+            text: text,
             clues: {
                 across: getClues("#across"),
                 down: getClues("#down")
             }
         };
-        let puzWriter = new PuzWriter();
-
         var saveData = (function () {
             var a = document.createElement("a");
             a.style = "display: none";
-            return function (data, fileName) {
-                var blob = new Blob([data], {type: "octet/stream"}),
+            return function (data, fileName, type) {
+                var blob = new Blob([data], {type: type}),
                     url = window.URL.createObjectURL(blob);
                 a.href = url;
                 a.download = fileName;
@@ -45,6 +46,12 @@ window.onload = function() {
             };
         }());
 
-        saveData(puzWriter.toPuz(json), "puzzle.puz");
+        if (document.querySelector("#ipuz")) {
+            let puzWriter = new IPuzWriter();
+            saveData(puzWriter.toFile(json), "puzzle.ipuz", "application/json");
+        } else {
+            let puzWriter = new PuzWriter();
+            saveData(puzWriter.toFile(json), "puzzle.puz", "octet/stream");
+        }
     });
 };

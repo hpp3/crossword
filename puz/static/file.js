@@ -168,11 +168,52 @@ class PuzWriter {
     this.setMaskedChecksum(3, 0x45, 0x44, c_part);
   }
 
-  toPuz(json) {
+  toFile(json) {
+    json.clues = {
+      across: json.clues.across.map(x => x.join(". ")),
+      down: json.clues.down.map(x => x.join(". ")),
+    };
     this.writeHeader(json);
     this.writeFill(json);
     this.writeStrings(json);
     this.computeChecksums();
     return new Uint8Array(this.buf);
+  }
+}
+
+
+class IPuzWriter {
+  toFile(json) {
+    let puzzle = [];
+    let solution = [];
+    let row_i = 0;
+    for (const row of json.text) {
+      puzzle.push(row.map((e, i) => 
+          json.grid[row_i + i] == '.' 
+        ? "#"
+        : (e.match(/^\d+$/) || !e  
+          ? e 
+          : 0)));
+      solution.push(row.map((e, i) =>
+        json.grid[row_i + i] == '.' ? "#" : '-'));
+      row_i += json.size.cols;
+    }
+
+    return JSON.stringify({
+      version: "http://ipuz.org/v2",
+      kind: ["http://ipuz.org/crossword#1"],
+      title: json.title,
+      author: json.author,
+      dimensions: {
+        width: json.size.cols,
+        height: json.size.rows
+      },
+      puzzle: puzzle,
+      solution: solution,
+      clues: {
+        Across: json.clues.across,
+        Down: json.clues.down,
+      }
+    });
   }
 }
